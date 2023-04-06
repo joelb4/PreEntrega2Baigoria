@@ -27,7 +27,7 @@
                         <a class="nav-link" href="./pages/library.html">Biblioteca</a>
                     </li>
                     <li class="nav-item px-2">
-                        <button class="btn bg-light"><a class="text-dark h5" href="./checkout.html">Carrito</a></button>
+                        <button class="btn btn-light"><a class="text-dark h5" href="./checkout.html">Carrito</a></button>
                     </li>
                 </ul>
             </div>
@@ -37,11 +37,23 @@
         <h1 class="text-center my-5 pt-4">PlayNation</h1>
         <section class="container mt-5">
             <h2 class="mb-4">Catálogo</h2>
-            <input type="search" name="" id="buscarProducto" class="mb-4 p-2" style="width: 320px;" placeholder="Ingrese título, desarroladora o género">
+            <div class="form">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="search" name="" id="buscarProducto" class="mb-4 p-2 form-control"  placeholder="Ingrese título, desarroladora o género">
+                    </div>
+                    <div class="col-md-4">
+                        <button id="btnOrdenarTitulo1" class="btn btn-dark py-2 form-control">Ordenar alfabéticamente</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button id="btnOrdenarPrecio1" class="btn btn-dark py-2 form-control">Ordenar por precio</button>
+                    </div>             
+                </div>   
+            </div> 
             <div id="contenedor" class="row">
 
             </div>
-            <button class="btn bg-light col-md-12"><a class="text-dark h5" href="./checkout.html"> Ver Carrito</a></button>
+            <button class="btn bg-info col-md-12"><a class="text-dark h5" href="./checkout.html"> Ver Carrito</a></button>
 
         </section>
     </main>

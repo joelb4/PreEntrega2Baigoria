@@ -2,39 +2,37 @@ const retornoCardHTML = (producto)=> {
     const existe = carrito.find((e) => e.id === producto.id)
     if (existe !== undefined) {
         return `<div class="col-md-3 mb-4">    
-                <div class="card">
-                    <img src="./${producto.imagen}" class="card-img-top" alt="...">
-                    <div class="card-body text-center table-dark">
-                        <h4 class="card-title">${producto.nombre}</h4>
-                        <h5 class="card-text">${producto.desarrolladora}</h5>
-                        <p class="card-text">${producto.genero}</p>
-                        <h5 class="card-title">$${producto.precio}</h5>
-                        <button href="" class="btn btn-success enCarrito" id="${producto.id}">En carrito</button>
+                    <div class="card text-white text-center bg-dark">
+                        <img src="./${producto.imagen}" class="card-img-top" alt="...">
+                        <div class="card-header">
+                            <h4 class="card-title">${producto.nombre}</h4>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-text">${producto.desarrolladora}</h5>
+                            <p class="card-text">${producto.genero}</p>
+                            <h5 class="card-title">$${producto.precio}</h5>
+                            <button href="" class="btn btn-success btn-card enCarrito" id="${producto.id}">En carrito</button>
+                        </div>
                     </div>
-                </div>
-            </div>`
+                </div>`
     } else {
         return `<div class="col-md-3 mb-4">    
-                <div class="card">
-                    <img src="./${producto.imagen}" class="card-img-top" alt="...">
-                    <div class="card-body text-center table-dark">
-                        <h4 class="card-title">${producto.nombre}</h4>
-                        <h5 class="card-text">${producto.desarrolladora}</h5>
-                        <p class="card-text">${producto.genero}</p>
-                        <h5 class="card-title">$${producto.precio}</h5>
-                        <button href="" class="btn btn-primary aComprar" id="${producto.id}">Comprar</button>
+                    <div class="card text-white text-center bg-dark">
+                        <img src="./${producto.imagen}" class="card-img-top" alt="...">
+                        <div class="card-header">
+                            <h4 class="card-title">${producto.nombre}</h4>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-text">${producto.desarrolladora}</h5>
+                            <p class="card-text">${producto.genero}</p>
+                            <h5 class="card-title">$${producto.precio}</h5>
+                            <button href="" class="btn btn-primary btn-card aComprar" id="${producto.id}">Comprar</button>
+                        </div>
                     </div>
-                </div>
-            </div>`
+                </div>`
     }    
 }
 
-// const retornoCardError = ()=> {
-//     return `<div class="card-error">
-//                 <h2>Error</h2>
-//                 <h3>Vuelva a intentar</h3>
-//             </div>`
-// }
 const retornoCompraRealizada = (subtotal)=> {
     return `<h2 class="pt-4">Gracias por comprar en PlayNation!</h2>
             <h4>Gasto total: $${subtotal}</h4>
@@ -52,9 +50,17 @@ const retornoErrorCarritoVacio = ()=> {
 }
 
 const retornoConfirmarCompra = (subtotal)=> {
-    return `<h1>¿Desea confirmar la compra por $${subtotal}?</h1>
-            <button href="" class="btn btn-success col-sm-6" id="confirmar">COMPRAR</button>
-            <button href="" class="btn btn-danger col-sm-6" id="cancelar">CANCELAR</button>
+    return `<div class= "container">
+                <h2 class= "text-center">¿Desea confirmar la compra por $${subtotal}?</h2>
+                <div class= "form-row">
+                    <div class= "col-sm-6">
+                        <button href="" class="btn btn-success form-control" id="confirmar">COMPRAR</button>
+                    </div>
+                    <div class= "col-sm-6">
+                        <button href="" class="btn btn-danger form-control" id="cancelar">CANCELAR</button>
+                    </div>
+                </div>
+            </div>
     `
 }
 

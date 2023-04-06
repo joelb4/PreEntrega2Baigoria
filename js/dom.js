@@ -1,5 +1,7 @@
 const contenedor = document.querySelector("#contenedor")
 const inputSearch = document.querySelector("#buscarProducto")
+const btnOrdenarTitulo = document.querySelector("#btnOrdenarTitulo1" || "#btnOrdenarTitulo2")
+const btnOrdenarPrecio = document.querySelector("#btnOrdenarPrecio1" || "#btnOrdenarPrecio2")
 
 const cargarProductos = (array)=> {
     contenedor.innerHTML = ""
@@ -28,8 +30,49 @@ const buscarProductos = (array)=> {
     })
 }
 
+const ordenarProductosTitulo = (array)=> {
+    btnOrdenarTitulo.addEventListener("click", ()=> {
+        if (btnOrdenarTitulo.id === "btnOrdenarTitulo1") {
+            let arrayOrdenado = ordenarAscendente(array, "nombre")
+            btnOrdenarTitulo.id = "btnOrdenarTitulo2"
+            btnOrdenarTitulo.textContent = "Ordenar alfabeticamente ⬇"
+            btnOrdenarPrecio.textContent = "Ordenar por precio"
+            cargarProductos(arrayOrdenado)
+        } else {
+            let arrayOrdenado = ordenarDescendente(array, "nombre")
+            btnOrdenarTitulo.id = "btnOrdenarTitulo1"
+            btnOrdenarTitulo.textContent = "Ordenar alfabeticamente ⬆"
+            btnOrdenarPrecio.textContent = "Ordenar por precio"
+            cargarProductos(arrayOrdenado)
+        }
+    })
+}
+
+const ordenarProductosPrecio = (array)=> {
+    btnOrdenarPrecio.addEventListener("click", ()=> {
+        if (btnOrdenarPrecio.id === "btnOrdenarPrecio1") {
+            let arrayOrdenado = ordenarAscendente(array, "precio")
+            btnOrdenarPrecio.id = "btnOrdenarPrecio2"
+            btnOrdenarPrecio.textContent = "Ordenar por precio ⬇"
+            btnOrdenarTitulo.textContent = "Ordenar alfabeticamente"
+            cargarProductos(arrayOrdenado)
+        } else {
+            let arrayOrdenado = ordenarDescendente(array, "precio")
+            btnOrdenarPrecio.id = "btnOrdenarPrecio1"
+            btnOrdenarPrecio.textContent = "Ordenar por precio ⬆"
+            btnOrdenarTitulo.textContent = "Ordenar alfabeticamente"
+            cargarProductos(arrayOrdenado)
+        }        
+    })
+}
+
+
+
+
+
+
 const clickBotonComprar = ()=> {
-    const btnComprar = document.querySelectorAll("button.btn")
+    const btnComprar = document.querySelectorAll("button.btn-card")
     for (boton of btnComprar) {
         boton.addEventListener("mouseover",(e)=> {
             const btn = document.getElementById(e.target.id)
@@ -69,4 +112,6 @@ const clickBotonComprar = ()=> {
 
 recuperarCarrito()
 cargarProductos(productos)
+ordenarProductosPrecio(productos)
+ordenarProductosTitulo(productos)
 buscarProductos(productos)

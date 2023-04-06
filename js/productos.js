@@ -19,13 +19,23 @@ const productos = [
 
 const ordenarAscendente = (array, atributo)=> {
     return array.sort((a, b) => {
-        if (a[atributo] > b[atributo]) {
-            return 1
-        }
-        if (a[atributo] < b[atributo]) {
-            return -1
-        }
-        return 0
+        if (atributo === "nombre") {
+            if (a[atributo].toUpperCase() > b[atributo].toUpperCase()) {
+                return 1
+            }
+            if (a[atributo].toUpperCase() < b[atributo].toUpperCase()) {
+                return -1
+            }
+            return 0
+        } else {
+            if (a[atributo] > b[atributo]) {
+                return 1
+            }
+            if (a[atributo] < b[atributo]) {
+                return -1
+            }
+            return 0
+        }        
     })
 }
 
