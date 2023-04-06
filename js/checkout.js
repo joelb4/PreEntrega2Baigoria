@@ -35,6 +35,9 @@ const clickBotonEliminar = ()=> {
             }
             guardarCarrito()
             setSubtotal()
+            if (carrito.length === 0) {
+                contenedor.innerHTML = retornoErrorCarritoVacio()
+            }
         })        
     }
 }
@@ -44,8 +47,7 @@ const clickBotonVaciarCarrito = ()=> {
     btnVaciarCarrito.addEventListener("click", (e)=> {
         carrito.splice(0,carrito.length)
         guardarCarrito()
-        productosCarrito.innerHTML = ""
-        setSubtotal()
+        contenedor.innerHTML = retornoErrorCarritoVacio()
     })
 }
 
