@@ -66,11 +66,6 @@ const ordenarProductosPrecio = (array)=> {
     })
 }
 
-
-
-
-
-
 const clickBotonComprar = ()=> {
     const btnComprar = document.querySelectorAll("button.btn-card")
     for (boton of btnComprar) {
