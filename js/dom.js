@@ -1,12 +1,31 @@
 const contenedor = document.querySelector("#contenedor")
+const inputSearch = document.querySelector("#buscarProducto")
 
 const cargarProductos = (array)=> {
-    recuperarCarrito()
+    contenedor.innerHTML = ""
     array.forEach(producto => {
         contenedor.innerHTML += retornoCardHTML(producto)        
     })
-    //const boton = contenedor.querySelectorALL()
     clickBotonComprar()
+}
+
+const filtrar = (texto, array)=> {
+    return array.filter((el) => {
+        return (el.nombre.toLowerCase().includes(texto.toLowerCase())
+        || el.desarrolladora.toLowerCase().includes(texto.toLowerCase())
+        || el.genero.toLowerCase().includes(texto.toLowerCase()))
+    })
+}
+
+const buscarProductos = (array)=> {
+    inputSearch.addEventListener("input", (ev) => {
+        if (ev.target.value !== "") {
+            const productosFiltrados = filtrar(ev.target.value, array)
+            cargarProductos(productosFiltrados)
+        } else {
+            cargarProductos(array)
+        }
+    })
 }
 
 const clickBotonComprar = ()=> {
@@ -26,10 +45,7 @@ const clickBotonComprar = ()=> {
                 btn.innerText = "En carrito"
                 btn.className = "btn btn-success enCarrito"
             }
-
         })
-
-
 
         boton.addEventListener("click", (e)=> {
             let resultado = productos.find(producto => producto.id === parseInt(e.target.id))
@@ -47,10 +63,10 @@ const clickBotonComprar = ()=> {
                 btn.innerText = "En carrito"
                 guardarCarrito()
             }
-        }) 
-        //boton.addEventListener()      
+        })     
     }
 }
 
-
+recuperarCarrito()
 cargarProductos(productos)
+buscarProductos(productos)

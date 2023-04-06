@@ -1,15 +1,22 @@
 const productosCarrito = document.querySelector("#productosCarrito")
 const btnComprar = document.querySelector("#comprar.btn")
+const contenedor = document.querySelector("div.contenedor")
+const contConfirmarCompra = contenedor.querySelector("#contConfirmarCompra")
 
 const cargarCarrito = (array)=> {
     recuperarCarrito()
-    array.forEach(producto => {
-        productosCarrito.innerHTML += retornoProductoCarrito(producto)
-    });
-    calcularSubtotal()
-    clickBotonEliminar()
-    clickBotonComprar()
-    clickBotonVaciarCarrito()
+
+    if (array.length>0) {
+        array.forEach(producto => {
+            productosCarrito.innerHTML += retornoProductoCarrito(producto)
+        })
+        setSubtotal()
+        clickBotonEliminar()
+        clickBotonConfirmarCompra()
+        clickBotonVaciarCarrito()        
+    } else {
+        contenedor.innerHTML = retornoErrorCarritoVacio()
+    }
 }
 
 const eliminarproductoHTML = (id)=> {
@@ -27,7 +34,7 @@ const clickBotonEliminar = ()=> {
                 eliminarproductoHTML(e.target.id)
             }
             guardarCarrito()
-            calcularSubtotal()
+            setSubtotal()
         })        
     }
 }
@@ -37,27 +44,38 @@ const clickBotonVaciarCarrito = ()=> {
     btnVaciarCarrito.addEventListener("click", (e)=> {
         carrito.splice(0,carrito.length)
         guardarCarrito()
-        productosCarrito.innerHTML=""
-        calcularSubtotal()
+        productosCarrito.innerHTML = ""
+        setSubtotal()
     })
 }
 
-const clickBotonComprar = ()=> {
+const clickBotonConfirmarCompra = ()=> {debugger
     btnComprar.addEventListener("click", (e)=> {
-        if (confirm("¿Desea confirmar la compra?")) {
+        const total = calcularSubtotal(carrito)
+        contConfirmarCompra.innerHTML = retornoConfirmarCompra(total)
+        const btnConfirmar = contenedor.querySelector("button#confirmar")
+        const btnCancelar = contenedor.querySelector("button#cancelar")
+        btnConfirmar.addEventListener("click", ()=> {
             carrito.splice(0,carrito.length)
             guardarCarrito()
-            alert("Gracias por comprar en Playnation")
-            productosCarrito.innerHTML=""
-        }
+            productosCarrito.innerHTML = ""
+            contenedor.innerHTML = retornoCompraRealizada(total)
+        })
+        btnCancelar.addEventListener("click", ()=> {
+            contConfirmarCompra.innerHTML = ""
+        })
+
     })
 }
 
-const calcularSubtotal = ()=> {
-    const subtotal = document.querySelector("#subtotal")
-    let total = carrito.reduce((total, e)=> {
-        return total + e.precio
+const calcularSubtotal = (array)=> {
+    return array.reduce((total, el)=> {
+        return total + el.precio
     }, 0)
+}
+const setSubtotal = ()=> {
+    const subtotal = document.querySelector("#subtotal")
+    const total = calcularSubtotal(carrito)
     subtotal.innerHTML = `$${total}`
 }
 
