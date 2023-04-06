@@ -2,6 +2,7 @@ const productosCarrito = document.querySelector("#productosCarrito")
 const btnComprar = document.querySelector("#comprar.btn")
 const contenedor = document.querySelector("div.contenedor")
 const contConfirmarCompra = contenedor.querySelector("#contConfirmarCompra")
+const btnVaciarCarrito = document.querySelector("#vaciarCarrito")
 
 const cargarCarrito = (array)=> {
     recuperarCarrito()
@@ -43,20 +44,24 @@ const clickBotonEliminar = ()=> {
 }
 
 const clickBotonVaciarCarrito = ()=> {
-    const btnVaciarCarrito = document.querySelector("#vaciarCarrito")
-    btnVaciarCarrito.addEventListener("click", (e)=> {
+    btnVaciarCarrito.addEventListener("click", ()=> {
         carrito.splice(0,carrito.length)
         guardarCarrito()
         contenedor.innerHTML = retornoErrorCarritoVacio()
     })
 }
 
-const clickBotonConfirmarCompra = ()=> {debugger
+const clickBotonConfirmarCompra = ()=> {
     btnComprar.addEventListener("click", (e)=> {
         const total = calcularSubtotal(carrito)
         contConfirmarCompra.innerHTML = retornoConfirmarCompra(total)
         const btnConfirmar = contenedor.querySelector("button#confirmar")
         const btnCancelar = contenedor.querySelector("button#cancelar")
+        btnVaciarCarrito.setAttribute("disabled","true")
+        const btnEliminar = document.querySelectorAll("td button.btn.btn-dark")
+        for (boton of btnEliminar) {
+            boton.setAttribute("disabled","true")
+        }
         btnConfirmar.addEventListener("click", ()=> {
             carrito.splice(0,carrito.length)
             guardarCarrito()
@@ -65,6 +70,10 @@ const clickBotonConfirmarCompra = ()=> {debugger
         })
         btnCancelar.addEventListener("click", ()=> {
             contConfirmarCompra.innerHTML = ""
+            btnVaciarCarrito.disabled=false
+            for (boton of btnEliminar) {
+                boton.disabled=false
+            }
         })
 
     })
