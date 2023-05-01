@@ -36,31 +36,14 @@ const retornoCardHTML = (producto)=> {
 const retornoCompraRealizada = (subtotal)=> {
     return `<h2 class="pt-4">Gracias por comprar en PlayNation!</h2>
             <h4>Gasto total: $${subtotal}</h4>
-            <p>Consulta tus juegos en la biblioteca</p>
-            <p>Seguir comprando</p>
-            <p></p>
+            <button class="btn bg-info col-md-12"><a class="text-dark h5" href="./">Volver a la tienda</a></button>
     `
 }
 
 const retornoErrorCarritoVacio = ()=> {
     return `<h2 class="pt-4">El carrito está vacío!</h2>
             <h4>Selecciona los juegos que quieras comprar en el catálogo</h4>
-            <h4>Consulta tus juegos en la biblioteca</h4>
-    `
-}
-
-const retornoConfirmarCompra = (subtotal)=> {
-    return `<div class= "container">
-                <h2 class= "text-center">¿Desea confirmar la compra por $${subtotal}?</h2>
-                <div class= "form-row">
-                    <div class= "col-sm-6">
-                        <button href="" class="btn btn-success form-control" id="confirmar">COMPRAR</button>
-                    </div>
-                    <div class= "col-sm-6">
-                        <button href="" class="btn btn-danger form-control" id="cancelar">CANCELAR</button>
-                    </div>
-                </div>
-            </div>
+            <button class="btn bg-info col-md-12"><a class="text-dark h5" href="./">Volver a la tienda</a></button>
     `
 }
 

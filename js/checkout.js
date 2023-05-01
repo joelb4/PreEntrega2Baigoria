@@ -1,12 +1,10 @@
 const productosCarrito = document.querySelector("#productosCarrito")
 const btnComprar = document.querySelector("#comprar.btn")
 const contenedor = document.querySelector("div.contenedor")
-const contConfirmarCompra = contenedor.querySelector("#contConfirmarCompra")
 const btnVaciarCarrito = document.querySelector("#vaciarCarrito")
 
 const cargarCarrito = (array)=> {
     recuperarCarrito()
-
     if (array.length>0) {
         array.forEach(producto => {
             productosCarrito.innerHTML += retornoProductoCarrito(producto)
@@ -14,7 +12,8 @@ const cargarCarrito = (array)=> {
         setSubtotal()
         clickBotonEliminar()
         clickBotonConfirmarCompra()
-        clickBotonVaciarCarrito()        
+        clickBotonVaciarCarrito() 
+        clickBotonVolverTienda()       
     } else {
         contenedor.innerHTML = retornoErrorCarritoVacio()
     }
@@ -29,6 +28,7 @@ const clickBotonEliminar = ()=> {
     const btnEliminar = document.querySelectorAll("td button.btn.btn-dark")
     for (boton of btnEliminar) {
         boton.addEventListener("click", (e)=> {
+            notificacion("Producto eliminado", "warning")
             const index = carrito.findIndex(producto => producto.id === parseInt(e.target.id))
             if (index >=0) {
                 carrito.splice(index, 1)
@@ -45,37 +45,36 @@ const clickBotonEliminar = ()=> {
 
 const clickBotonVaciarCarrito = ()=> {
     btnVaciarCarrito.addEventListener("click", ()=> {
-        carrito.splice(0,carrito.length)
-        guardarCarrito()
-        contenedor.innerHTML = retornoErrorCarritoVacio()
+        alertify.confirm("Se vaciará el carrito", "¿Está seguro?",
+            ()=> {
+                carrito.splice(0,carrito.length)
+                guardarCarrito()
+                contenedor.innerHTML = retornoErrorCarritoVacio()
+                notificacion("Carrito vaciado", "error")
+            },
+            ()=>{
+                notificacion("Cancelado", "warning")
+            })
     })
 }
 
 const clickBotonConfirmarCompra = ()=> {
     btnComprar.addEventListener("click", (e)=> {
         const total = calcularSubtotal(carrito)
-        contConfirmarCompra.innerHTML = retornoConfirmarCompra(total)
-        const btnConfirmar = contenedor.querySelector("button#confirmar")
-        const btnCancelar = contenedor.querySelector("button#cancelar")
-        btnVaciarCarrito.setAttribute("disabled","true")
-        const btnEliminar = document.querySelectorAll("td button.btn.btn-dark")
-        for (boton of btnEliminar) {
-            boton.setAttribute("disabled","true")
-        }
-        btnConfirmar.addEventListener("click", ()=> {
-            carrito.splice(0,carrito.length)
-            guardarCarrito()
-            productosCarrito.innerHTML = ""
-            contenedor.innerHTML = retornoCompraRealizada(total)
-        })
-        btnCancelar.addEventListener("click", ()=> {
-            contConfirmarCompra.innerHTML = ""
-            btnVaciarCarrito.disabled=false
-            for (boton of btnEliminar) {
-                boton.disabled=false
-            }
-        })
-
+        alertify.confirm("¿Desea confirmar la compra?", "Costo total: $"+total,
+            ()=> {
+                notificacion("Compra realizada", "success")
+                carrito.splice(0,carrito.length)
+                guardarCarrito()
+                productosCarrito.innerHTML = ""
+                contenedor.innerHTML = retornoCompraRealizada(total)
+            },
+            ()=> {
+                notificacion("Compra cancelada", "error")
+            })
+            .set("closable",false)
+            .set("movable",false)
+            .set("transition","zoom")
     })
 }
 
@@ -88,6 +87,13 @@ const setSubtotal = ()=> {
     const subtotal = document.querySelector("#subtotal")
     const total = calcularSubtotal(carrito)
     subtotal.innerHTML = `$${total}`
+}
+
+const clickBotonVolverTienda = ()=> {
+    const btnVolver = document.getElementById("botonVolverIndex")
+    btnVolver.addEventListener("click", ()=> {
+        window.location.href = "./"
+    })
 }
 
 cargarCarrito(carrito)

@@ -2,13 +2,24 @@ const contenedor = document.querySelector("#contenedor")
 const inputSearch = document.querySelector("#buscarProducto")
 const btnOrdenarTitulo = document.querySelector("#btnOrdenarTitulo1" || "#btnOrdenarTitulo2")
 const btnOrdenarPrecio = document.querySelector("#btnOrdenarPrecio1" || "#btnOrdenarPrecio2")
+const productos = []
+const URL = "./js/productos.json"
 
-const cargarProductos = (array)=> {
+const obtenerProductos = ()=> {
+    fetch(URL)
+    .then((response)=> response.json())
+    .then((data)=> productos.push(...data))
+    .then(()=> cargarProductos(productos))
+    .catch(error => {console.error(error)})
+}
+
+const cargarProductos = (array)=> { 
     contenedor.innerHTML = ""
     array.forEach(producto => {
         contenedor.innerHTML += retornoCardHTML(producto)        
     })
     clickBotonComprar()
+    clickBotonIrCarrito()
 }
 
 const filtrar = (texto, array)=> {
@@ -27,6 +38,24 @@ const buscarProductos = (array)=> {
         } else {
             cargarProductos(array)
         }
+    })
+}
+
+const ordenarAscendente = (array, atributo)=> {
+    return array.sort((a, b)=> {
+        let res = 0
+        a[atributo] > b[atributo] && (res = 1)
+        a[atributo] < b[atributo] && (res = -1)
+        return res
+    })
+}
+
+const ordenarDescendente = (array, atributo)=> {
+    return array.sort((a, b) => {
+        let res = 0
+        a[atributo] < b[atributo] && (res = 1)
+        a[atributo] > b[atributo] && (res = -1)
+        return res
     })
 }
 
@@ -69,44 +98,55 @@ const ordenarProductosPrecio = (array)=> {
 const clickBotonComprar = ()=> {
     const btnComprar = document.querySelectorAll("button.btn-card")
     for (boton of btnComprar) {
-        boton.addEventListener("mouseover",(e)=> {
-            const btn = document.getElementById(e.target.id)
+        boton.addEventListener("mouseover",({target:{id}})=> {
+            const btn = document.getElementById(id)
             if (btn.innerText === "En carrito") {
                 btn.innerText = "Eliminar"
                 btn.className = "btn btn-danger enCarrito"
             }
         })
 
-        boton.addEventListener("mouseout",(e)=> {
-            const btn = document.getElementById(e.target.id)
+        boton.addEventListener("mouseout",({target:{id}})=> {
+            const btn = document.getElementById(id)
             if (btn.innerText === "Eliminar") {
                 btn.innerText = "En carrito"
                 btn.className = "btn btn-success enCarrito"
             }
         })
 
-        boton.addEventListener("click", (e)=> {
-            let resultado = productos.find(producto => producto.id === parseInt(e.target.id))
-            let existe = carrito.findIndex((el) => el.id === parseInt(e.target.id))
+        boton.addEventListener("click", ({target:{id}})=> {
+            let resultado = productos.find(producto => producto.id === parseInt(id))
+            let existe = carrito.findIndex((el) => el.id === parseInt(id))
             if (existe >=0) {
                 carrito.splice(existe,1)
-                const btn = document.getElementById(e.target.id)
+                const btn = document.getElementById(id)
                 btn.innerText = "Comprar"
                 btn.className = "btn btn-primary aComprar"
                 guardarCarrito()
+                notificacion("Producto eliminado del carrito", "error")
+
             } else {
                 carrito.push(resultado)
-                const btn = document.getElementById(e.target.id)
+                const btn = document.getElementById(id)
                 btn.className = "btn btn-success enCarrito"
                 btn.innerText = "En carrito"
                 guardarCarrito()
+                notificacion("Producto agregado al carrito", "success")
             }
         })     
     }
 }
 
+const clickBotonIrCarrito = ()=>{
+    const btnVerCarrito = document.getElementById("BotonIrCarrito")
+    btnVerCarrito.addEventListener("click", ()=> {
+        window.location.href = "./checkout.html"
+    })
+}
+
+
+obtenerProductos()
 recuperarCarrito()
-cargarProductos(productos)
 ordenarProductosPrecio(productos)
 ordenarProductosTitulo(productos)
 buscarProductos(productos)
